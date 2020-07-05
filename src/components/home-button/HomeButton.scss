@@ -1,0 +1,34 @@
+.HomeButton {
+    width: 150px;
+    height: 150px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100px auto;
+    img {
+        width: 80px;
+        height: 80px;
+        margin: auto auto 0 auto;
+    }
+    span {
+        font-size: 20px;
+        margin: auto;
+        cursor: default;
+    }
+}
+
+.HomeButton:hover {
+    animation: buttonBackground 0.15s linear forwards;
+    cursor: pointer;
+}
+
+@keyframes buttonBackground {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: rgb(150, 150, 150);
+    }
+}

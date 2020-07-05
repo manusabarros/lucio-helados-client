@@ -1,11 +1,12 @@
 import React from "react";
 import "./HomePage.scss";
+import Home from "../../components/home/Home";
 
 const HomePage = (props: any) => {
     return (
-        <div className="HomePage">
-            <h1>Home</h1>
-        </div>
+        <section className="HomePage">
+            <Home />
+        </section>
     );
 };
 

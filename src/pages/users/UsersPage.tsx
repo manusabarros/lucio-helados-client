@@ -1,11 +1,12 @@
 import React from "react";
 import "./UsersPage.scss";
+import Users from "../../components/users/Users";
 
 const UsersPage = (props: any) => {
     return (
-        <div className="UsersPage">
-            <h1>Users</h1>
-        </div>
+        <section className="UsersPage">
+            <Users />
+        </section>
     );
 };
 

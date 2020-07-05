@@ -1,12 +1,12 @@
 import React from "react";
 import "./LoginPage.scss";
-import LoginForm from "../../components/login-form/LoginForm";
+import Login from "../../components/login/Login";
 
 const LoginPage = (props: any) => {
     return (
-        <div className="LoginPage">
-            <LoginForm/>
-        </div>
+        <section className="LoginPage">
+            <Login />
+        </section>
     );
 };
 

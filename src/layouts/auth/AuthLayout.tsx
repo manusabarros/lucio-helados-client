@@ -6,12 +6,14 @@ import LoginPage from "../../pages/login/LoginPage";
 const AuthLayout = (props: any) => {
     return (
         <div className="AuthLayout">
-            <Switch>
-                <Route path="/login" exact>
-                    <LoginPage />
-                </Route>
-                <Redirect to="/login" />
-            </Switch>
+            <main className="pages">
+                <Switch>
+                    <Route path="/login" exact>
+                        <LoginPage />
+                    </Route>
+                    <Redirect to="/login" />
+                </Switch>
+            </main>
         </div>
     );
 };
