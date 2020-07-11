@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import "./App.scss";
 import { Context } from "./shared/Context";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { gql } from "apollo-boost";
 import RootLayout from "./layouts/root/RootLayout";
@@ -82,10 +82,10 @@ const App = (props: any) => {
                     presentToast,
                 }}
             >
-                <BrowserRouter>
+                <HashRouter>
                     {isLoggedIn === false && <AuthLayout />}
                     {isLoggedIn === true && <RootLayout />}
-                </BrowserRouter>
+                </HashRouter>
             </Context.Provider>
         </div>
     );
