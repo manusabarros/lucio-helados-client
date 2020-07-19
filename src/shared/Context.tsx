@@ -4,7 +4,7 @@ export const Context = createContext({
     setIsLoggedIn: (isLoggedIn: boolean) => {},
     user: {},
     setUser: (user: object) => {},
-    authenticateResp: {} as any,
+    refetch: () => new Promise(() => {}),
     presentLoading: () => {},
     dismissLoading: () => {},
     presentToast: (message: string) => {},

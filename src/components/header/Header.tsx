@@ -13,10 +13,19 @@ const LOGOUT = gql`
 
 const Header = (props: any) => {
     const context = useContext(Context);
-    const [logout] = useLazyQuery(LOGOUT, { onCompleted: () => {
-        context.setIsLoggedIn(false);
-        context.dismissLoading();
-    } });
+    const [logout] = useLazyQuery(LOGOUT, {
+        fetchPolicy: "network-only",
+        onCompleted: () => {
+            context.dismissLoading();
+            context.setIsLoggedIn(false);
+            context.setUser({});
+        },
+        onError: () => {
+            context.dismissLoading();
+            context.setIsLoggedIn(false);
+            context.setUser({});
+        },
+    });
 
     const handleLogout = () => {
         context.presentLoading();

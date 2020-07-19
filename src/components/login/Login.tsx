@@ -1,8 +1,8 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useRef } from "react";
 import "./Login.scss";
 import logo from "../../assets/logo.png";
 import { useHistory } from "react-router-dom";
-import { gql } from "apollo-boost";
+import { gql, NetworkStatus } from "apollo-boost";
 import { useLazyQuery } from "react-apollo";
 import { Context } from "../../shared/Context";
 import { parseError } from "../../utils/utils";
@@ -19,32 +19,39 @@ const Login = (props: any) => {
     const context = useContext(Context);
     const history = useHistory();
     const [login] = useLazyQuery(LOGIN, {
-        onCompleted: async () => {
-            const { data }: any = await context.authenticateResp.refetch();
-            context.setUser(data.authenticate);
-            context.setIsLoggedIn(true);
-            history.push("/home");
-            context.dismissLoading();
+        fetchPolicy: "no-cache",
+        onCompleted: () => {
+            setTimeout(async () => {
+                try {
+                    const res: any = await context.refetch();
+                    context.setIsLoggedIn(true);
+                    context.setUser(res.data.authenticate);
+                    history.push("/home");
+                } catch (err) {
+                    context.setIsLoggedIn(false);
+                }
+                context.dismissLoading();
+            }, 500);
         },
         onError: (err) => {
             context.presentToast(parseError(err));
-            context.dismissLoading();
         },
     });
 
     const handleLogin = useCallback((event: any) => {
+        console.log("HANDLE LOGIN");
         context.presentLoading();
         event.preventDefault();
         const username = event.target.username.value;
         const password = event.target.password.value;
         if (!username) {
-            context.presentToast("Por favor ingrese su usuario.");
             context.dismissLoading();
+            context.presentToast("Por favor ingrese su usuario.");
             return;
         }
         if (!password) {
-            context.presentToast("Por favor ingrese su contraseña.");
             context.dismissLoading();
+            context.presentToast("Por favor ingrese su contraseña.");
             return;
         }
         login({ variables: { username, password } });

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import "./App.scss";
 import { Context } from "./shared/Context";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { gql } from "apollo-boost";
 import RootLayout from "./layouts/root/RootLayout";
@@ -27,30 +27,36 @@ const App = (props: any) => {
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
-    const loadingCount = useRef(0);
+    const loadingRef = useRef(false);
 
-    const authenticateResp = useQuery(AUTHENTICATE, {
+    const { refetch } = useQuery(AUTHENTICATE, {
         onCompleted: (data) => {
             setIsLoggedIn(true);
             setUser(data.authenticate);
             dismissLoading();
         },
         onError: () => {
-            setIsLoggedIn(false);
             dismissLoading();
+            setIsLoggedIn(false);
         },
     });
 
+    useEffect(() => {
+        presentLoading();
+    }, []);
+
     const presentLoading = useCallback(() => {
-        loadingCount.current++;
-        setLoading(true);
+        if (!loadingRef.current) {
+            setLoading(true);
+            loadingRef.current = true;
+        }
     }, []);
 
     const dismissLoading = useCallback(() => {
-        loadingCount.current--;
-        if (loadingCount.current === 0) {
+        if (loadingRef.current) {
             setTimeout(() => {
                 setLoading(false);
+                loadingRef.current = false;
             }, 500);
         }
     }, []);
@@ -63,10 +69,6 @@ const App = (props: any) => {
         }, 3000);
     }, []);
 
-    useEffect(() => {
-        presentLoading();
-    }, []);
-
     return (
         <div className="App">
             {loading && <Loading />}
@@ -76,16 +78,16 @@ const App = (props: any) => {
                     setIsLoggedIn,
                     user,
                     setUser,
-                    authenticateResp,
+                    refetch,
                     presentLoading,
                     dismissLoading,
                     presentToast,
                 }}
             >
-                <HashRouter>
+                <BrowserRouter>
                     {isLoggedIn === false && <AuthLayout />}
                     {isLoggedIn === true && <RootLayout />}
-                </HashRouter>
+                </BrowserRouter>
             </Context.Provider>
         </div>
     );
